@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     connect(ui->pushButtonAdd, SIGNAL(released()), this, SLOT(additionOperation()));
     connect(ui->pushButtonSubtraction, SIGNAL(released()), this, SLOT(subtractionOperation()));
     connect(ui->pushButtonFullClear, SIGNAL(released()), this, SLOT(clearScreenOperation()));
+    connect(ui->pushButtonFullClear, SIGNAL(released()), this, SLOT(clearEquationText()));
     connect(ui->pushButtonMultiplication, SIGNAL(released()), this, SLOT(multiplicationOperation()));
     connect(ui->pushButtonDivision, SIGNAL(released()), this, SLOT(divisionOperation()));
     connect(ui->pushButtonEqual, SIGNAL(released()), this, SLOT(equalOperation()));
@@ -45,11 +46,12 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     connect(ui->pushButton7, SIGNAL(released()), this, SLOT(displayEquation()));
     connect(ui->pushButton8, SIGNAL(released()), this, SLOT(displayEquation()));
     connect(ui->pushButton9, SIGNAL(released()), this, SLOT(displayEquation()));
-    connect(ui->clearEntryButton, SIGNAL(released()), this, SLOT(clearEquationText()));
+    connect(ui->pushButtonEqual, SIGNAL(released()), this, SLOT(clearEquationText()));
     connect(ui->squareRootButton, SIGNAL(released()), this, SLOT(squareRootOperation()));
     connect(ui->squareButton, SIGNAL(released()), this, SLOT(squareFunction()));
     connect(ui->exponentButton, SIGNAL(released()), this, SLOT(exponentFunction()));
     connect(ui->factorialButton, SIGNAL(released()), this, SLOT(factorialOperation()));
+    connect(ui->clearEntryButton, SIGNAL(released()), this, SLOT(clearEntryNumber()));
 
     ui->pushButtonDecimal->setCheckable(true);
     ui->pushButtonAdd->setCheckable(true);
@@ -129,7 +131,9 @@ void MainWindow::clearScreenOperation(){
 
     if(pressedButton == ui->pushButtonFullClear){
         newCalculatorText = '0';
+        clearEquationText();
     }
+
 
     ui->calculatorText->setText(newCalculatorText);
     ui->pushButtonDecimal->setChecked(false);
@@ -363,7 +367,7 @@ void MainWindow::displayEquation(){
     if((ui->pushButtonMultiplication->isChecked()) && (!secondNumberPressed2)){
         calculatorTextNumber = pressedButton->text().toDouble();
         newCalculatorText = QString::number(firstNumber, 'g', 15);
-        ui->equationText->setText(newCalculatorText + " * ");
+        ui->equationText->setText(newCalculatorText + " x ");
     }
 
     if((ui->pushButtonDivision->isChecked()) && (!secondNumberPressed2)){
@@ -384,9 +388,21 @@ void MainWindow::clearEquationText(){
     QPushButton *pressedButton = dynamic_cast<QPushButton*>(sender());
     QString newCalculatorText;
 
-    if(pressedButton == ui->clearEntryButton){
+    if(pressedButton == ui->pushButtonEqual){
         newCalculatorText = ' ';
     }
 
     ui->equationText->setText(newCalculatorText);
+}
+
+void MainWindow::clearEntryNumber(){
+    QPushButton *pressedButton = dynamic_cast<QPushButton*>(sender());
+    QString newCalculatorText;
+
+    if(pressedButton == ui->clearEntryButton){
+        newCalculatorText = '0';
+
+    }
+
+    ui->calculatorText->setText(newCalculatorText);
 }
