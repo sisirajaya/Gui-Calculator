@@ -132,6 +132,9 @@ void MainWindow::clearScreenOperation(){
     if(pressedButton == ui->pushButtonFullClear){
         newCalculatorText = '0';
         clearEquationText();
+        equalOperation();
+        firstNumber = 0;
+        ui->pushButtonDecimal->setEnabled(true);
     }
 
 
