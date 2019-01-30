@@ -3,12 +3,14 @@
 #include <QFont>
 #include <QProcess>
 #include <QtMath>
+#include <QDebug>
 
 //QT has a qDebug function to debug your runtime errors : qDebug << "test case ";
 
 static double firstNumber;
 static bool secondNumberPressed = false;
 static bool secondNumberPressed2 = false;
+static bool equationCompleted = false;
 
 
 
@@ -82,19 +84,25 @@ void MainWindow::pushButtonNumbers(){
     QPushButton *pressedButton = dynamic_cast<QPushButton*>(sender());
     double calculatorTextNumber;
     QString newCalculatorText;
-    newCalculatorText = QString::number(calculatorTextNumber, 'g', 15);
+    //newCalculatorText = QString::number(calculatorTextNumber, 'g', 15);
     //ui->calculatorText->setText(newCalculatorText);
 
-    if((ui->pushButtonAdd->isChecked()) && (!secondNumberPressed)){
+    if(equationCompleted){
+        equationCompleted = false;
+        newCalculatorText = QString::number(calculatorTextNumber, 'g', 15);
+        ui->calculatorText->setText(newCalculatorText);
+    }
+
+    if((ui->pushButtonAdd->isChecked()) && (!secondNumberPressed) && (!equationCompleted)){
         calculatorTextNumber = pressedButton->text().toDouble();
         secondNumberPressed = true;
-    }else if((ui->pushButtonSubtraction->isChecked()) && (!secondNumberPressed)){
+    }else if((ui->pushButtonSubtraction->isChecked()) && (!secondNumberPressed) && (!equationCompleted)){
         calculatorTextNumber = pressedButton->text().toDouble();
         secondNumberPressed = true;
-    }else if((ui->pushButtonMultiplication->isChecked()) && (!secondNumberPressed)){
+    }else if((ui->pushButtonMultiplication->isChecked()) && (!secondNumberPressed) && (!equationCompleted)){
         calculatorTextNumber = pressedButton->text().toDouble();
         secondNumberPressed = true;
-    }else if((ui->pushButtonDivision->isChecked()) && (!secondNumberPressed)){
+    }else if((ui->pushButtonDivision->isChecked()) && (!secondNumberPressed) && (!equationCompleted)){
         calculatorTextNumber = pressedButton->text().toDouble();
         secondNumberPressed = true;
     }else if((ui->squareButton->isChecked()) && (!secondNumberPressed)){
@@ -113,8 +121,11 @@ void MainWindow::pushButtonNumbers(){
        calculatorTextNumber = (ui->calculatorText->text() + pressedButton->text()).toDouble();
    }
 
+
     newCalculatorText = QString::number(calculatorTextNumber, 'g', 15);
     ui->calculatorText->setText(newCalculatorText);
+
+
 
 }
 
@@ -148,6 +159,7 @@ void MainWindow::clearScreenOperation(){
 
     ui->calculatorText->setText(newCalculatorText);
     ui->pushButtonDecimal->setChecked(false);
+    //equationCompleted = false;
 
 }
 
@@ -312,12 +324,10 @@ void MainWindow::equalOperation(){
     if(pressedButton == ui->pushButtonEqual){
         ui->pushButtonDecimal->setEnabled(true);
         ui->pushButtonDecimal->setChecked(false);
-
     }
 
     clearEquationText();
-
-
+    equationCompleted = true;
 
 }
 
