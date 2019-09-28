@@ -5,7 +5,6 @@
 #include <QtMath>
 #include <QDebug>
 
-//QT has a qDebug function to debug your runtime errors : qDebug << "test case ";
 
 static double firstNumber;
 static bool secondNumberPressed = false;
@@ -17,11 +16,7 @@ static bool equationCompleted = false;
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow){
 
     ui->setupUi(this);
-    //Pointer ui stores memory address of the instance of class MainWindow
-    //Ui accesses member pushButton of class QPushButton
-    //Signal is essentially a pointer that signals to a callback function SLOT when a event
-    //such as a button being pressed occurs. SLOT is the function that is called
-    //Function printPushButton does all the dirty work ;)
+  
     connect(ui->pushButton0, SIGNAL(released()), this, SLOT(pushButtonNumbers()));
     connect(ui->pushButton1, SIGNAL(released()), this, SLOT(pushButtonNumbers()));
     connect(ui->pushButton2, SIGNAL(released()), this, SLOT(pushButtonNumbers()));
@@ -84,8 +79,6 @@ void MainWindow::pushButtonNumbers(){
     QPushButton *pressedButton = dynamic_cast<QPushButton*>(sender());
     double calculatorTextNumber;
     QString newCalculatorText;
-    //newCalculatorText = QString::number(calculatorTextNumber, 'g', 15);
-    //ui->calculatorText->setText(newCalculatorText);
 
     if(equationCompleted){
         equationCompleted = false;
@@ -120,13 +113,8 @@ void MainWindow::pushButtonNumbers(){
     }else{
        calculatorTextNumber = (ui->calculatorText->text() + pressedButton->text()).toDouble();
    }
-
-
     newCalculatorText = QString::number(calculatorTextNumber, 'g', 15);
     ui->calculatorText->setText(newCalculatorText);
-
-
-
 }
 
 void MainWindow::valueChangerOperator(){
@@ -159,8 +147,6 @@ void MainWindow::clearScreenOperation(){
 
     ui->calculatorText->setText(newCalculatorText);
     ui->pushButtonDecimal->setChecked(false);
-    //equationCompleted = false;
-
 }
 
 void MainWindow::deleteOperation(){
@@ -194,8 +180,6 @@ void MainWindow::addDecimal(){
                 pressedButton->setChecked(false);
                 break;
             }
-           //pressedButton->setChecked(true);
-           //break;
         }
     }
     pressedButton->setChecked(true);
